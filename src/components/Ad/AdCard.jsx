@@ -1,9 +1,9 @@
 import React from "react";
-import { Heart, MapPin, Eye, Sparkles } from "lucide-react";
+import { Heart, MapPin, Eye, Sparkles, MessageSquare } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 
 export const AdCard = ({ ad }) => {
-  const { navigateTo, toggleFavorite, favorites, getSellerById } = useApp();
+  const { navigateTo, toggleFavorite, favorites, getSellerById, startChat } = useApp();
   
   const isFav = favorites.includes(ad.id);
   const seller = getSellerById(ad.sellerId);
@@ -22,21 +22,27 @@ export const AdCard = ({ ad }) => {
     toggleFavorite(ad.id);
   };
 
-  // Mock robust e-commerce pricing with struck-out values and discounts
-  // Carlos Silva's Pro Ads or Gold featured ads get discount tags
-  const hasDiscount = ad.featured || ad.price > 500000;
-  const discountPercent = ad.featured ? 15 : 10;
+  // Only featured (Gold/Premium) ads show a discount badge — never fabricate discounts
+  const hasDiscount = ad.featured;
+  const discountPercent = ad.featured ? 15 : 0;
   const originalPrice = hasDiscount ? ad.price * (1 + discountPercent / 100) : null;
 
   return (
     <div
       onClick={() => navigateTo("ad-details", ad)}
-      className={`group relative flex flex-col rounded-xl bg-white text-slate-800 border transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
+      className={`group relative flex flex-col rounded-xl bg-white text-slate-800 border transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-xl ${
         ad.featured
-          ? "border-amber-400/80 ring-1 ring-amber-400/30"
-          : "border-slate-200 hover:border-slate-300"
+          ? "border-amber-400/80 ring-1 ring-amber-400/30 hover:border-amber-500 hover:shadow-amber-500/15"
+          : "border-slate-200 hover:border-slate-300 hover:shadow-slate-200/40"
       }`}
     >
+      {/* Shine effect overlay for Gold featured ads */}
+      {ad.featured && (
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">
+          <div className="absolute -top-12 -bottom-12 -left-24 bg-gradient-to-r from-transparent via-white/25 to-transparent w-[30%] rotate-[30deg] transform -translate-x-[150px] group-hover:translate-x-[500px] transition-transform duration-1000 ease-out" />
+        </div>
+      )}
+
       {/* Top Image area */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-50 border-b border-slate-100">
         <img
@@ -144,6 +150,15 @@ export const AdCard = ({ ad }) => {
             </span>
           )}
         </div>
+
+        {/* Contact Button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); startChat(ad.id, ad.sellerId); }}
+          className="mt-2 w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-primary hover:text-white text-slate-600 text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-200 hover:border-primary"
+        >
+          <MessageSquare className="w-3 h-3" />
+          Contactar Vendedor
+        </button>
 
       </div>
     </div>

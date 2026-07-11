@@ -110,22 +110,22 @@ export const Hero = () => {
               <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient} opacity-95 z-10`} />
               
               {/* Slide Content wrapper */}
-              <div className="max-w-7xl mx-auto px-6 sm:px-12 w-full h-full flex flex-col md:flex-row items-center justify-between gap-8 relative z-20 text-white py-6">
+              <div className="max-w-7xl mx-auto px-4 sm:px-12 w-full h-full flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 relative z-20 text-white py-4 sm:py-6">
                 
-                <div className="flex flex-col items-start text-left gap-3 max-w-xl">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white">
-                    <Sparkles className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300" />
+                <div className="flex flex-col items-start text-left gap-2 sm:gap-3 max-w-xl">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white">
+                    <Sparkles className="w-3 h-3 text-yellow-300 fill-yellow-300" />
                     {slide.badge}
                   </span>
-                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight drop-shadow-md">
+                  <h1 className="text-xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight drop-shadow-md">
                     {slide.title}
                   </h1>
-                  <p className="text-xs sm:text-sm text-slate-200 font-medium max-w-md drop-shadow">
+                  <p className="text-[10px] sm:text-sm text-slate-200 font-medium max-w-md drop-shadow">
                     {slide.subtitle}
                   </p>
                   <button
                     onClick={() => handleCtaClick(slide)}
-                    className="mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-lg shadow-lg hover:shadow-emerald-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all"
+                    className="mt-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] sm:text-sm px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg hover:shadow-emerald-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all"
                   >
                     {slide.cta}
                   </button>
@@ -177,15 +177,15 @@ export const Hero = () => {
 
       {/* 2. Horizontal Benefits Bar (Mercado Livre Style) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
-        <div className="bg-card border border-border shadow-premium rounded-2xl p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y md:divide-y-0 md:divide-x divide-border">
+        <div className="bg-card border border-border shadow-premium rounded-2xl p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-y-4 sm:gap-y-6 sm:gap-x-2">
           {benefits.map((benefit, idx) => (
             <div 
               key={benefit.id}
-              className={`flex items-center gap-3.5 ${
-                idx > 1 ? "pt-4 md:pt-0" : ""
-              } ${idx % 2 !== 0 ? "pl-2 sm:pl-0" : ""} md:pl-6`}
+              className={`flex items-center gap-3 px-2 sm:px-4 ${
+                idx % 2 === 0 ? "border-r border-border/40 md:border-r-0" : ""
+              } md:border-r md:border-border/60 md:last:border-r-0`}
             >
-              <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 shrink-0">
+              <div className="p-2 sm:p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 shrink-0">
                 {benefit.icon}
               </div>
               <div className="flex flex-col min-w-0">

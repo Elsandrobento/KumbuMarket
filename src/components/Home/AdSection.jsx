@@ -89,12 +89,12 @@ export const AdSection = () => {
           >
             Vender Agora
           </button>
-          <a
-            href="#"
+          <button
+            onClick={() => addNotification("info", "Como Funciona", "1. Cria uma conta gratuita → 2. Publica o teu anúncio → 3. Recebe mensagens de compradores → 4. Fecha negócio em segurança!")}
             className="flex-1 md:flex-none text-center border border-slate-200 hover:bg-slate-50 text-slate-700 font-extrabold text-xs px-5 py-3 rounded-lg transition-all"
           >
             Como Funciona
-          </a>
+          </button>
         </div>
       </section>
 

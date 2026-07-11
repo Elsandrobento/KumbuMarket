@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MessageSquare, Bell, User, PlusCircle, Search, LogOut, LayoutDashboard, Shield, Heart, MapPin, ChevronDown, ShoppingBag } from "lucide-react";
+import { MessageSquare, Bell, User, PlusCircle, Search, LogOut, LayoutDashboard, Shield, Heart, MapPin, ChevronDown, ShoppingBag, Moon, Sun, Menu, X } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { PROVINCES } from "../../data/mockData";
 
@@ -17,12 +17,16 @@ export const Header = () => {
     searchProvince,
     setSearchProvince,
     setSearchQuery,
-    setSearchCategory
+    setSearchCategory,
+    setSelectedChatId,
+    darkMode,
+    toggleDarkMode
   } = useApp();
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [localSearch, setLocalSearch] = useState("");
 
   const unreadChats = chats.filter(c => c.unread).length;
@@ -33,7 +37,7 @@ export const Header = () => {
     { id: 2, text: `${reports.length} denúncias pendentes de análise`, view: "admin" }
   ] : [
     { id: 1, text: "O seu anúncio 'Toyota Land Cruiser' recebeu 245 visitas hoje!", view: "dashboard" },
-    { id: 2, text: "Dina Santos enviou-lhe uma proposta no chat.", view: "chat" }
+    { id: 2, text: "Dina Santos enviou-lhe uma proposta no chat.", view: "chat", chatId: "chat_1" }
   ];
 
   const handleActionClick = (view) => {
@@ -181,7 +185,7 @@ export const Header = () => {
               Vender
             </button>
             <button 
-              onClick={() => navigateTo("home")}
+              onClick={() => navigateTo(currentUser ? "dashboard" : "home")}
               className="hover:text-slate-900 transition-colors"
             >
               Histórico
@@ -189,7 +193,16 @@ export const Header = () => {
           </div>
 
           {/* Right Side: Auth / Dashboard CTA / Messages / Notifications */}
-          <div className="flex items-center gap-4 text-slate-700 shrink-0">
+          <div className="hidden md:flex items-center gap-4 text-slate-700 shrink-0">
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className="p-1.5 rounded-lg hover:bg-yellow-300/50 transition-all"
+              title={darkMode ? "Modo Claro" : "Modo Escuro"}
+            >
+              {darkMode ? <Sun className="w-4 h-4 text-amber-600" /> : <Moon className="w-4 h-4 text-slate-600" />}
+            </button>
             
             {currentUser ? (
               <>
@@ -273,7 +286,16 @@ export const Header = () => {
 
                 {/* Messages Quicklink */}
                 <button 
-                  onClick={() => navigateTo("chat")}
+                  onClick={() => {
+                    const unread = chats.find(c => c.unread && (c.buyerId === currentUser?.id || c.sellerId === currentUser?.id));
+                    const mine = chats.filter(c => c.buyerId === currentUser?.id || c.sellerId === currentUser?.id);
+                    if (unread) {
+                      setSelectedChatId(unread.id);
+                    } else if (mine.length > 0) {
+                      setSelectedChatId(mine[0].id);
+                    }
+                    navigateTo("chat");
+                  }}
                   className="hover:text-slate-900 relative transition-all"
                   title="Mensagens"
                 >
@@ -309,6 +331,9 @@ export const Header = () => {
                           <div 
                             key={n.id}
                             onClick={() => {
+                              if (n.chatId) {
+                                setSelectedChatId(n.chatId);
+                              }
                               navigateTo(n.view);
                               setShowNotifications(false);
                             }}
@@ -350,9 +375,45 @@ export const Header = () => {
 
           </div>
 
-        </div>
+          {/* Mobile: dark mode + hamburger */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={toggleDarkMode}
+              className="p-1.5 rounded-lg hover:bg-yellow-300/50 transition-all"
+              title={darkMode ? "Modo Claro" : "Modo Escuro"}
+            >
+              {darkMode ? <Sun className="w-4 h-4 text-amber-600" /> : <Moon className="w-4 h-4 text-slate-600" />}
+            </button>
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="p-1.5 rounded-lg hover:bg-yellow-300/50 transition-all"
+            >
+              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
 
+        </div>
       </div>
+
+      {/* Mobile Slide-down Menu */}
+      {showMobileMenu && (
+        <div className="md:hidden bg-[#fff159] border-t border-yellow-400 px-4 py-3 flex flex-col gap-2 shadow-md">
+          <button onClick={() => { navigateTo("search"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Categorias</button>
+          <button onClick={() => { navigateTo("search"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Ofertas do Dia</button>
+          <button onClick={() => { navigateTo(currentUser ? "create-ad" : "dashboard"); setShowMobileMenu(false); }} className="text-left text-sm font-bold text-emerald-700 py-2 border-b border-yellow-300/60">Vender</button>
+          {currentUser ? (
+            <>
+              <button onClick={() => { navigateTo("dashboard"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Meu Dashboard</button>
+              <button onClick={() => { logoutUser(); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-red-600 py-2">Terminar Sessão</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => { setShowAuthModal(true); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Criar Conta</button>
+              <button onClick={() => { setShowAuthModal(true); setShowMobileMenu(false); }} className="text-left text-sm font-bold text-emerald-700 py-2">Entrar</button>
+            </>
+          )}
+        </div>
+      )}
     </header>
   );
 };

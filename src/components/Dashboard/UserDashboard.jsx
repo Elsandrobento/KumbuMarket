@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { 
   User, Eye, MessageSquare, Plus, Edit2, ShieldAlert, Heart, Star, 
-  Sparkles, LogOut, Check, ChevronRight, Globe, Camera, Phone, Settings, Trash2, Landmark
+  Sparkles, LogOut, Check, ChevronRight, Globe, Camera, Phone, Settings, Trash2, Landmark, BarChart2
 } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useApp } from "../../context/AppContext";
 
 export const UserDashboard = () => {
@@ -33,6 +34,16 @@ export const UserDashboard = () => {
 
   // Compute total views of user ads
   const totalViews = myAds.reduce((sum, ad) => sum + ad.views, 0);
+
+  const mockChartData = [
+    { name: "Seg", views: Math.floor(totalViews * 0.1) || 12 },
+    { name: "Ter", views: Math.floor(totalViews * 0.15) || 18 },
+    { name: "Qua", views: Math.floor(totalViews * 0.12) || 14 },
+    { name: "Qui", views: Math.floor(totalViews * 0.2) || 25 },
+    { name: "Sex", views: Math.floor(totalViews * 0.25) || 40 },
+    { name: "Sáb", views: Math.floor(totalViews * 0.18) || 30 },
+    { name: "Dom", views: Math.floor(totalViews * 0.3) || 50 },
+  ];
 
   const handleProfileSave = (e) => {
     e.preventDefault();
@@ -212,6 +223,7 @@ export const UserDashboard = () => {
             {[
               { id: "my-ads", label: `Meus Anúncios (${myAds.length})` },
               { id: "favorites", label: `Favoritos Guardados (${myFavs.length})` },
+              { id: "stats", label: "Métricas" },
               { id: "settings", label: "Definições de Perfil" }
             ].map((tab) => (
               <button
@@ -361,7 +373,44 @@ export const UserDashboard = () => {
               </div>
             )}
 
-            {/* C. PROFILE SETTINGS TAB */}
+            {/* C. STATS TAB */}
+            {activeTab === "stats" && (
+              <div className="bg-card border border-border p-6 rounded-3xl shadow-premium">
+                 <div className="flex items-center gap-2 mb-6 border-b border-border pb-3">
+                   <BarChart2 className="w-5 h-5 text-primary" />
+                   <div>
+                     <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Visualizações ao longo do tempo</h3>
+                     <p className="text-[10px] text-muted-foreground">Métrica de alcance dos seus anúncios nos últimos 7 dias</p>
+                   </div>
+                 </div>
+                 
+                 <div className="h-72 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={mockChartData} margin={{ top: 5, right: 20, bottom: 5, left: -20 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: "currentColor", opacity: 0.5}} dy={10} />
+                        <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fill: "currentColor", opacity: 0.5}} dx={-10} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)', fontSize: '12px', fontWeight: 'bold' }}
+                          itemStyle={{ color: '#10b981' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="views" 
+                          name="Visualizações"
+                          stroke="#10b981" 
+                          strokeWidth={3} 
+                          dot={{r: 4, strokeWidth: 2, fill: "var(--card)"}} 
+                          activeDot={{r: 6, strokeWidth: 0}} 
+                          animationDuration={1500}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                 </div>
+              </div>
+            )}
+
+            {/* D. PROFILE SETTINGS TAB */}
             {activeTab === "settings" && (
               <div className="bg-card border border-border p-6 rounded-3xl shadow-premium max-w-2xl">
                 <form onSubmit={handleProfileSave} className="flex flex-col gap-5">

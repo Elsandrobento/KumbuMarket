@@ -15,7 +15,8 @@ export const AdDetails = () => {
     startChat, 
     getSellerById, 
     reportAd,
-    addSellerReview
+    addSellerReview,
+    setSearchCategory
   } = useApp();
 
   const [activeImgIdx, setActiveImgIdx] = useState(0);
@@ -107,12 +108,25 @@ export const AdDetails = () => {
         >
           <ArrowLeft className="w-4 h-4" /> Voltar à lista
         </button>
-        <div className="flex items-center gap-2 text-[11px]">
-          <span>Início</span>
-          <ChevronRightIcon className="w-3 h-3" />
-          <span className="capitalize">{selectedAd.category}</span>
-          <ChevronRightIcon className="w-3 h-3" />
-          <span className="text-slate-700 truncate max-w-[120px] sm:max-w-[200px]">{selectedAd.title}</span>
+        <div className="flex items-center gap-2 text-[11px] text-slate-500">
+          <button 
+            onClick={() => navigateTo("home")}
+            className="hover:text-primary transition-all font-semibold"
+          >
+            Início
+          </button>
+          <ChevronRightIcon className="w-3 h-3 shrink-0" />
+          <button 
+            onClick={() => {
+              setSearchCategory(selectedAd.category);
+              navigateTo("search");
+            }}
+            className="hover:text-primary transition-all capitalize font-semibold"
+          >
+            {selectedAd.category}
+          </button>
+          <ChevronRightIcon className="w-3 h-3 shrink-0" />
+          <span className="text-slate-700 truncate max-w-[120px] sm:max-w-[200px] font-semibold">{selectedAd.title}</span>
         </div>
       </div>
 

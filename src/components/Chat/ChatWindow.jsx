@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Send, Image, MoreVertical, ShieldAlert, Phone, Trash2, ArrowLeft, MessageCircle } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 
@@ -17,6 +17,11 @@ export const ChatWindow = () => {
 
   const [messageText, setMessageText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   if (!currentUser) {
     return (
@@ -35,7 +40,19 @@ export const ChatWindow = () => {
   // Filter chats where current user is participant (buyer or seller)
   const myChats = chats.filter(c => c.buyerId === currentUser.id || c.sellerId === currentUser.id);
 
+  useEffect(() => {
+    if (!selectedChatId && window.innerWidth >= 768 && myChats.length > 0) {
+      setSelectedChatId(myChats[0].id);
+    }
+  }, [selectedChatId, myChats.length, setSelectedChatId]);
+
   const activeChat = chats.find(c => c.id === selectedChatId);
+
+  useEffect(() => {
+    if (activeChat?.messages) {
+      scrollToBottom();
+    }
+  }, [activeChat?.messages]);
 
   // Info about recipient
   const recipient = activeChat
@@ -305,6 +322,7 @@ export const ChatWindow = () => {
                     </div>
                   );
                 })}
+                <div ref={messagesEndRef} />
               </div>
 
               {/* Message Input Bar */}

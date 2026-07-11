@@ -345,6 +345,349 @@ export const INITIAL_ADS = [
     }
   },
   {
+    id: "ad_9",
+    title: "PlayStation 5 Slim 1TB SSD - Comandos DualSense",
+    description: "Consola PlayStation 5 Slim com 1TB de armazenamento SSD. Totalmente nova, na caixa com selo de garantia de 1 ano. Inclui um comando DualSense original e dois jogos de oferta (EA Sports FC 24 e Spider-Man 2). Excelente oportunidade para os gamers de Luanda. Entrego em mão no Cazenga, Rangel ou Maianga. Pagamento apenas via transferência express na entrega.",
+    category: "electronicos",
+    subcategory: "Consolas & Jogos",
+    price: 380000,
+    priceType: "Preço Fixo",
+    condition: "Novo",
+    location: { province: "Luanda", city: "Cazenga" },
+    contact: "+244 912 987 654",
+    views: 450,
+    date: "Há 12 horas",
+    sellerId: "user_2",
+    featured: true,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "Sony",
+      modelo: "PS5 Slim",
+      armazenamento: "1TB SSD",
+      comandos: "1 DualSense",
+      garantia: "1 Ano"
+    }
+  },
+  {
+    id: "ad_10",
+    title: "Suzuki Swift GLX 2022 - Como Novo",
+    description: "Suzuki Swift versão GLX de 2022 à venda em Luanda. Viatura super económica, caixa de velocidades automática, motor a gasolina muito fiável de 1.2L. Apenas 18.500 km reais rodados. Ar condicionado gelando perfeitamente, ecrã touch inteligente com Apple CarPlay e Android Auto, câmara de retaguarda e jantes especiais. Sem qualquer batida ou retoque. Pintura de origem.",
+    category: "viaturas",
+    subcategory: "Carros de Passeio",
+    price: 8900000,
+    priceType: "Negociável",
+    condition: "Como Novo",
+    location: { province: "Luanda", city: "Viana" },
+    contact: "+244 923 456 789",
+    views: 1220,
+    date: "Há 1 dia",
+    sellerId: "user_1",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "Suzuki",
+      modelo: "Swift GLX",
+      ano: "2022",
+      quilometragem: "18.500 km",
+      combustivel: "Gasolina",
+      caixa: "Automática"
+    }
+  },
+  {
+    id: "ad_11",
+    title: "Mitsubishi L200 Triton Sportero 4x4 - Motor 2.5 DID",
+    description: "Excelente carrinha Mitsubishi L200 Triton Sportero, tração 4x4 operacional, motor 2.5 Turbo Diesel super forte e fiável. Caixa automática, estofos em pele preta, ar condicionado digital de duas zonas. Ideal para fazendas e estradas difíceis das províncias. Manutenção toda em dia, suspensão reforçada recentemente. Sem folgas nem fugas de óleo. Localizada no Lubango.",
+    category: "viaturas",
+    subcategory: "Carrinhas & SUV",
+    price: 26500000,
+    priceType: "Negociável",
+    condition: "Usado",
+    location: { province: "Huíla", city: "Lubango" },
+    contact: "+244 923 456 789",
+    views: 840,
+    date: "Há 2 dias",
+    sellerId: "user_1",
+    featured: true,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1533526318654-37e2c5e69b8c?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "Mitsubishi",
+      modelo: "L200 Triton Sportero",
+      ano: "2019",
+      quilometragem: "112.000 km",
+      combustivel: "Gasóleo",
+      caixa: "Automática"
+    }
+  },
+  {
+    id: "ad_12",
+    title: "Apartamento T3 no Condomínio Central do Kilamba",
+    description: "Vendo excelente apartamento T3 localizado num dos blocos centrais e mais seguros da Centralidade do Kilamba. O apartamento conta com 3 quartos (sendo 1 suite), sala ampla com varanda envidraçada, cozinha mobilada com despensa e 2 casas de banho completas. Abastecimento regular de água e energia com gerador do condomínio. Estacionamento privado e elevadores a funcionar a 100%. Livre de ónus, toda a papelada legalizada.",
+    category: "imoveis",
+    subcategory: "Apartamentos",
+    price: 45000000,
+    priceType: "Preço Fixo",
+    condition: "Usado",
+    location: { province: "Luanda", city: "Kilamba" },
+    contact: "+244 912 987 654",
+    views: 1980,
+    date: "Há 3 dias",
+    sellerId: "user_2",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=500&fit=crop"
+    ],
+    features: {
+      quartos: "3",
+      banheiros: "2",
+      area: "120 m²",
+      tipo: "Venda",
+      mobilado: "Não"
+    }
+  },
+  {
+    id: "ad_13",
+    title: "Aluguer de Gerador Industrial Cummins 50kVA Insonorizado",
+    description: "Disponibilizamos geradores industriais Cummins de 50kVA para aluguer diário, semanal ou mensal, ideais para obras de construção civil, eventos e indústrias em Benguela e arredores. Cabine insonorizada de baixo ruído, motor a diesel ultra eficiente com arranque automático (QTA). Inclui manutenção preventiva técnica gratuita e equipa de suporte local 24h. O transporte é por nossa conta nas cidades de Lobito e Catumbela.",
+    category: "servicos",
+    subcategory: "Construção & Equipamentos",
+    price: 65000,
+    priceType: "Negociável",
+    condition: "N/A",
+    location: { province: "Benguela", city: "Lobito" },
+    contact: "+244 931 112 233",
+    views: 180,
+    date: "Há 4 dias",
+    sellerId: "user_3",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&h=500&fit=crop"
+    ],
+    features: {
+      capacidade: "50 kVA",
+      marca: "Cummins",
+      combustivel: "Diesel",
+      servico: "Aluguer",
+      tecnicos: "Incluído"
+    }
+  },
+  {
+    id: "ad_14",
+    title: "Café Arábica Puro em Grão do Uíge - Saco 25kg",
+    description: "Excelente café Arábica 100% puro, cultivado de forma artesanal e ecológica no planalto da província do Uíge. Grãos selecionados manualmente, secos ao sol e prontos para torrefação. O café possui um aroma intenso, acidez equilibrada e notas achocolatadas que caracterizam a nossa produção nacional angolana. Vendemos em sacos de 25 kg para cafetarias, hotéis e revendedores em todo o país. Descontos para volumes maiores de compra.",
+    category: "agricultura",
+    subcategory: "Produtos Agrícolas",
+    price: 15000,
+    priceType: "Preço Fixo",
+    condition: "Novo",
+    location: { province: "Uige", city: "Negage" },
+    contact: "+244 923 456 789",
+    views: 310,
+    date: "Há 5 dias",
+    sellerId: "user_1",
+    featured: true,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=500&fit=crop"
+    ],
+    features: {
+      origem: "Uíge",
+      tipo: "Arábica",
+      peso: "25 kg por saco",
+      estado: "Grão Verde",
+      colheita: "2025/2026"
+    }
+  },
+  {
+    id: "ad_15",
+    title: "Trator Agrícola John Deere 5075E - Tração 4WD",
+    description: "Trator agrícola John Deere 5075E de 75cv com tração 4WD à venda em Huambo. Equipamento robusto e fiável com poucas horas de uso em lavouras locais de milho e batata. Cabine aberta com arco de proteção (ROPS). Transmissão sincronizada de 9 marchas à frente e 3 atrás. Pneus traseiros e dianteiros em óptimo estado, bomba hidráulica com excelente pressão. Documentos de importação em ordem e pronto para trabalhar imediatamente.",
+    category: "agricultura",
+    subcategory: "Maquinaria",
+    price: 14500000,
+    priceType: "Negociável",
+    condition: "Usado",
+    location: { province: "Huambo", city: "Bailundo" },
+    contact: "+244 923 456 789",
+    views: 520,
+    date: "Há 1 semana",
+    sellerId: "user_1",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "John Deere",
+      potencia: "75 CV",
+      tracao: "4WD (4x4)",
+      horas_uso: "1.450 h",
+      combustivel: "Diesel"
+    }
+  },
+  {
+    id: "ad_16",
+    title: "Serviço de Eletricista Geral Credenciado - Resoluções e Instalações",
+    description: "Serviços técnicos de eletricidade geral para residências, condomínios e estabelecimentos comerciais no Huambo. Executo montagem de quadros elétricos de raiz, esquemas de iluminação LED inteligente, ligação de eletrobombas, inversores solares com bancos de baterias, reparação de curtos-circuitos e instalação de geradores de apoio. Trabalho profissional com garantia de segurança e seguindo as normas nacionais da ENDE.",
+    category: "servicos",
+    subcategory: "Reparações & Instalações",
+    price: 10000,
+    priceType: "Negociável",
+    condition: "N/A",
+    location: { province: "Huambo", city: "Caála" },
+    contact: "+244 931 112 233",
+    views: 140,
+    date: "Há 3 dias",
+    sellerId: "user_3",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=500&fit=crop"
+    ],
+    features: {
+      experiencia: "6 Anos",
+      licenca: "Ordem dos Engenheiros/Técnicos",
+      tipo: "Residencial / Comercial",
+      disponibilidade: "Imediata"
+    }
+  },
+  {
+    id: "ad_17",
+    title: "Notebook HP ProBook 450 G8 Core i7 16GB RAM 512GB SSD",
+    description: "Notebook HP ProBook 450 G8 de alta performance em Cabinda. Processador Intel Core i7 de 11ª Geração, 16GB de memória RAM DDR4 e disco SSD super rápido NVMe de 512GB. Tela Full HD de 15.6 polegadas com tratamento antirreflexo. Teclado retroiluminado com numérico dedicado, leitor de impressões digitais para login seguro. Bateria com excelente saúde, durando até 6 horas de trabalho. Ideal para profissionais de TI, engenharia ou estudantes universitários.",
+    category: "tecnologia",
+    subcategory: "Computadores & Portáteis",
+    price: 550000,
+    priceType: "Preço Fixo",
+    condition: "Como Novo",
+    location: { province: "Cabinda", city: "Cabinda" },
+    contact: "+244 912 987 654",
+    views: 390,
+    date: "Há 4 dias",
+    sellerId: "user_2",
+    featured: true,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "HP",
+      processador: "Intel Core i7",
+      ram: "16 GB",
+      disco: "512 GB SSD NVMe",
+      sistema: "Windows 11 Pro"
+    }
+  },
+  {
+    id: "ad_18",
+    title: "Relógio Rolex Submariner Date (Premium Super-Clonado)",
+    description: "Relógio Rolex Submariner Date, linha premium super clonada com movimento automático mecânico suíço ETA real. Vidro em cristal de safira à prova de riscos, caixa e bracelete em aço inoxidável 904L com fecho ajustável Glidelock. Bisel giratório em cerâmica preta e marcadores luminescentes azuis brilhantes na escuridão. Resistente à água até 50 metros. Edição especial para colecionadores exigentes de Talatona. Rigorosamente novo.",
+    category: "moda",
+    subcategory: "Acessórios & Jóias",
+    price: 2500000,
+    priceType: "Negociável",
+    condition: "Como Novo",
+    location: { province: "Luanda", city: "Talatona" },
+    contact: "+244 923 456 789",
+    views: 730,
+    date: "Há 2 horas",
+    sellerId: "user_1",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&h=500&fit=crop"
+    ],
+    features: {
+      marca: "Rolex",
+      modelo: "Submariner Date 126610LN",
+      movimento: "Automático Suíço",
+      material: "Aço Inox 904L",
+      vidro: "Cristal de Safira"
+    }
+  },
+  {
+    id: "ad_19",
+    title: "Vaga: Técnico de Informática / Helpdesk Júnior",
+    description: "Empresa do ramo comercial no Namibe está a recrutar um Técnico de Informática Júnior para suporte técnico e helpdesk presencial. Tarefas: Configuração de computadores com Windows/Linux, manutenção preventiva de hardware, resolução de problemas de rede local (LAN, Wi-Fi), instalação de impressoras de rede e suporte ao utilizador final. Requisitos: Curso médio de informática concluído, boa comunicação verbal e capacidade para resolver problemas elétricos básicos.",
+    category: "empregos",
+    subcategory: "Tecnologia & TI",
+    price: 250000,
+    priceType: "Preço Fixo",
+    condition: "N/A",
+    location: { province: "Namibe", city: "Moçâmedes" },
+    contact: "+244 931 112 233",
+    views: 410,
+    date: "Há 1 dia",
+    sellerId: "user_3",
+    featured: false,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&h=500&fit=crop"
+    ],
+    features: {
+      contrato: "Tempo Inteiro",
+      salario: "250.000 AOA / Mês",
+      experiencia: "Mínimo 1 ano",
+      modalidade: "Presencial"
+    }
+  },
+  {
+    id: "ad_20",
+    title: "Lote de Terreno Espaçoso 20x30m - Talatona (ISUTIC)",
+    description: "Excelente lote de terreno limpo e plano para venda em Talatona, medindo 20 metros de largura por 30 metros de comprimento (600 m² de área total). Localizado numa zona nobre de forte expansão residencial e comercial, mesmo por trás do ISUTIC. Terreno ideal para construir uma moradia moderna ou anexo comercial de escritórios. Vedado por muros altos nas laterais e com portão metálico instalado. Documentação com direito de superfície regularizado.",
+    category: "imoveis",
+    subcategory: "Terrenos",
+    price: 35000000,
+    priceType: "Negociável",
+    condition: "N/A",
+    location: { province: "Luanda", city: "Talatona" },
+    contact: "+244 923 456 789",
+    views: 990,
+    date: "Há 6 dias",
+    sellerId: "user_1",
+    featured: true,
+    status: "ativo",
+    videoUrl: "",
+    images: [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=500&fit=crop"
+    ],
+    features: {
+      dimensoes: "20m x 30m",
+      area: "600 m²",
+      estado: "Muro e Portão",
+      documentos: "Superfície Concedida"
+    }
+  },
+  {
     id: "ad_p1",
     title: "Hyundai Santa Fe 2021 Luxury Pack",
     description: "Anúncio pendente criado para simulação do fluxo de aprovação do painel de administração. Hyundai Santa Fe em estado de novo, com 32.000 km reais. Caixa automática de 8 velocidades, teto panorâmico panorâmico de ponta a ponta. Sensores de estacionamento 360 e câmara traseira de alta definição. Um único dono em Luanda. Importado legalmente.",
