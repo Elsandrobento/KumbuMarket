@@ -12,11 +12,15 @@ export const ChatWindow = () => {
     currentUser,
     getSellerById,
     ads,
-    addNotification
+    addNotification,
+    navigateTo,
+    getMessages,
+    chatMessages
   } = useApp();
 
   const [messageText, setMessageText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
+  const [recipientProfiles, setRecipientProfiles] = useState({}); // { userId: profile }
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -37,9 +41,10 @@ export const ChatWindow = () => {
     );
   }
 
-  // Filter chats where current user is participant (buyer or seller)
+  // Filter chats where current user is participant (buyer or seller) — already filtered by Firestore
   const myChats = chats.filter(c => c.buyerId === currentUser.id || c.sellerId === currentUser.id);
 
+  // Auto-select first chat on desktop
   useEffect(() => {
     if (!selectedChatId && window.innerWidth >= 768 && myChats.length > 0) {
       setSelectedChatId(myChats[0].id);
@@ -48,29 +53,46 @@ export const ChatWindow = () => {
 
   const activeChat = chats.find(c => c.id === selectedChatId);
 
+  // Get messages for active chat from the Firestore real-time listener
+  const messages = selectedChatId ? (chatMessages[selectedChatId] || []) : [];
+
   useEffect(() => {
-    if (activeChat?.messages) {
-      scrollToBottom();
-    }
-  }, [activeChat?.messages]);
+    scrollToBottom();
+  }, [messages.length]);
 
-  // Info about recipient
-  const recipient = activeChat
-    ? getSellerById(activeChat.buyerId === currentUser.id ? activeChat.sellerId : activeChat.buyerId)
+  // Load recipient profiles from Firestore
+  useEffect(() => {
+    const loadProfiles = async () => {
+      const ids = myChats.map(c =>
+        c.buyerId === currentUser.id ? c.sellerId : c.buyerId
+      ).filter(id => id && !recipientProfiles[id]);
+
+      for (const id of ids) {
+        const profile = await getSellerById(id);
+        if (profile) {
+          setRecipientProfiles(prev => ({ ...prev, [id]: profile }));
+        }
+      }
+    };
+    if (myChats.length > 0) loadProfiles();
+  }, [myChats.length, currentUser.id]);
+
+  // Recipient for the currently active chat
+  const recipientId = activeChat
+    ? (activeChat.buyerId === currentUser.id ? activeChat.sellerId : activeChat.buyerId)
     : null;
+  const recipient = recipientId ? recipientProfiles[recipientId] : null;
 
-  // Info about Ad linked
+  // Info about Ad linked to active chat
   const ad = activeChat ? ads.find(a => a.id === activeChat.adId) : null;
 
   const handleSend = (e) => {
     e.preventDefault();
     if (!messageText.trim()) return;
-
     sendChatMessage(selectedChatId, messageText);
     setMessageText("");
   };
 
-  // Simulated image attachments
   const handleAttachImage = () => {
     const mockImageUrls = [
       "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&fit=crop",
@@ -83,7 +105,9 @@ export const ChatWindow = () => {
   };
 
   const handleBlockUser = () => {
-    addNotification("warning", "Utilizador Bloqueado", `${recipient.name} foi bloqueado temporariamente.`);
+    if (recipient) {
+      addNotification("warning", "Utilizador Bloqueado", `${recipient.name} foi bloqueado temporariamente.`);
+    }
     setShowOptions(false);
   };
 
@@ -92,6 +116,13 @@ export const ChatWindow = () => {
       deleteChat(selectedChatId);
       setShowOptions(false);
     }
+  };
+
+  // Format Firestore timestamp
+  const formatTime = (ts) => {
+    if (!ts) return "";
+    const date = ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
@@ -121,9 +152,8 @@ export const ChatWindow = () => {
             ) : (
               myChats.map((chat) => {
                 const partnerId = chat.buyerId === currentUser.id ? chat.sellerId : chat.buyerId;
-                const partner = getSellerById(partnerId);
+                const partner = recipientProfiles[partnerId];
                 const linkedAd = ads.find(a => a.id === chat.adId);
-                const lastMsg = chat.messages[chat.messages.length - 1];
                 const isSelected = selectedChatId === chat.id;
 
                 return (
@@ -138,8 +168,8 @@ export const ChatWindow = () => {
                   >
                     <div className="relative">
                       <img
-                        src={partner.avatar}
-                        alt={partner.name}
+                        src={partner?.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${partnerId}`}
+                        alt={partner?.name || ""}
                         className="w-10 h-10 rounded-full object-cover border border-border"
                       />
                       <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-card" />
@@ -147,18 +177,25 @@ export const ChatWindow = () => {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline">
-                        <h4 className="text-xs font-bold text-foreground truncate">{partner.name}</h4>
-                        <span className="text-[9px] text-muted-foreground">{lastMsg ? lastMsg.timestamp : ""}</span>
+                        <h4 className="text-xs font-bold text-foreground truncate">
+                          {partner?.name || chat.buyerName || "Utilizador"}
+                        </h4>
+                        <span className="text-[9px] text-muted-foreground">
+                          {chat.updatedAt?.seconds
+                            ? new Date(chat.updatedAt.seconds * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                            : ""}
+                        </span>
                       </div>
                       <p className="text-[10px] text-muted-foreground truncate font-semibold text-primary/80 mt-0.5">
-                        {linkedAd ? linkedAd.title : "Artigo Geral"}
+                        {linkedAd ? linkedAd.title : chat.adTitle || "Artigo Geral"}
                       </p>
                       <p className="text-[10px] text-muted-foreground truncate mt-0.5">
-                        {lastMsg ? lastMsg.text : "Nenhuma mensagem."}
+                        {chat.lastMessage || "Nenhuma mensagem."}
                       </p>
                     </div>
 
-                    {chat.unread && !isSelected && (
+                    {(chat.unreadBuyer > 0 && chat.buyerId === currentUser.id ||
+                      chat.unreadSeller > 0 && chat.sellerId === currentUser.id) && !isSelected && (
                       <span className="w-2 h-2 rounded-full bg-primary shrink-0 pulse-online" />
                     )}
                   </div>
@@ -189,15 +226,17 @@ export const ChatWindow = () => {
                   
                   <div className="relative">
                     <img
-                      src={recipient.avatar}
-                      alt={recipient.name}
+                      src={recipient?.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${recipientId}`}
+                      alt={recipient?.name || ""}
                       className="w-9 h-9 rounded-full object-cover border border-border"
                     />
                     <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-card" />
                   </div>
 
                   <div className="min-w-0">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">{recipient.name}</h4>
+                    <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">
+                      {recipient?.name || "Utilizador"}
+                    </h4>
                     <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                       Ativo agora
@@ -209,15 +248,17 @@ export const ChatWindow = () => {
                 <div className="flex items-center gap-1 relative">
                   
                   {/* WhatsApp contact redirect shortcut */}
-                  <a
-                    href={`https://wa.me/${recipient.whatsapp}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2 rounded-full hover:bg-muted text-emerald-600 hover:text-emerald-700"
-                    title="Chamar no WhatsApp"
-                  >
-                    <Phone className="w-4.5 h-4.5" />
-                  </a>
+                  {recipient?.whatsapp && (
+                    <a
+                      href={`https://wa.me/${recipient.whatsapp}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-2 rounded-full hover:bg-muted text-emerald-600 hover:text-emerald-700"
+                      title="Chamar no WhatsApp"
+                    >
+                      <Phone className="w-4.5 h-4.5" />
+                    </a>
+                  )}
 
                   <button
                     onClick={() => setShowOptions(!showOptions)}
@@ -274,9 +315,9 @@ export const ChatWindow = () => {
                 </div>
               )}
 
-              {/* Messages List Area */}
+              {/* Messages List Area — now from Firestore real-time */}
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 no-scrollbar">
-                {activeChat.messages.map((m) => {
+                {messages.map((m) => {
                   const isMe = m.senderId === currentUser.id;
                   const isSystem = m.senderId === "system";
 
@@ -317,7 +358,7 @@ export const ChatWindow = () => {
 
                       {/* Timestamp */}
                       <span className="text-[8px] text-muted-foreground mt-1 px-1">
-                        {m.timestamp}
+                        {formatTime(m.createdAt)}
                       </span>
                     </div>
                   );
