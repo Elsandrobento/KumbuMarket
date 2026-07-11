@@ -102,43 +102,49 @@ export const Hero = () => {
           return (
             <div
               key={slide.id}
-              className={`absolute inset-0 w-full h-full flex transition-all duration-700 ease-in-out ${
-                isActive ? "opacity-100 z-10 scale-100" : "opacity-0 z-0 scale-95 pointer-events-none"
+              className={`absolute inset-0 w-full h-full flex transition-all duration-1000 ease-in-out ${
+                isActive ? "opacity-100 z-10 scale-100" : "opacity-0 z-0 scale-105 pointer-events-none"
               }`}
             >
-              {/* Background gradient layout */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient} opacity-95 z-10`} />
+              {/* Full width background image */}
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="absolute inset-0 w-full h-full object-cover z-0"
+              />
               
-              {/* Slide Content wrapper */}
-              <div className="max-w-7xl mx-auto px-4 sm:px-12 w-full h-full flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 relative z-20 text-white py-4 sm:py-6">
+              {/* Dark/Gradient Overlay for text readability */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient} opacity-90 sm:opacity-85 z-10`} />
+              
+              {/* Slide Content wrapper with Glassmorphism */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-12 w-full h-full flex flex-col items-start justify-center gap-6 relative z-20 text-white py-4 sm:py-6">
                 
-                <div className="flex flex-col items-start text-left gap-2 sm:gap-3 max-w-xl">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white">
-                    <Sparkles className="w-3 h-3 text-yellow-300 fill-yellow-300" />
+                <div className="flex flex-col items-start text-left gap-3 sm:gap-4 max-w-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/20 text-white shadow-inner">
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300" />
                     {slide.badge}
                   </span>
-                  <h1 className="text-xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight drop-shadow-md">
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight drop-shadow-xl text-white">
                     {slide.title}
                   </h1>
-                  <p className="text-[10px] sm:text-sm text-slate-200 font-medium max-w-md drop-shadow">
+                  <p className="text-xs sm:text-base text-slate-200 font-medium max-w-lg drop-shadow-md">
                     {slide.subtitle}
                   </p>
-                  <button
-                    onClick={() => handleCtaClick(slide)}
-                    className="mt-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] sm:text-sm px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg hover:shadow-emerald-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all"
-                  >
-                    {slide.cta}
-                  </button>
-                </div>
-
-                {/* Cover Image */}
-                <div className="hidden md:block w-1/2 max-w-md aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="w-full h-full object-cover transform hover:scale-105 transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none" />
+                  
+                  <div className="flex items-center gap-3 mt-2 w-full sm:w-auto">
+                    <button
+                      onClick={() => handleCtaClick(slide)}
+                      className="flex-1 sm:flex-none bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    >
+                      {slide.cta}
+                    </button>
+                    <button 
+                      onClick={() => navigateTo("search")}
+                      className="hidden sm:block flex-none bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all backdrop-blur-sm"
+                    >
+                      Pesquisa Rápida
+                    </button>
+                  </div>
                 </div>
 
               </div>

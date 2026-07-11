@@ -26,6 +26,7 @@ export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
+  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [localSearch, setLocalSearch] = useState("");
 
@@ -59,6 +60,22 @@ export const Header = () => {
     setShowProvinceDropdown(false);
     navigateTo("search");
   };
+
+  const handleSellClick = () => {
+    if (!currentUser) {
+      setShowAuthModal(true);
+    } else {
+      navigateTo("create-ad");
+    }
+  };
+
+  const categories = [
+    { id: "viaturas", name: "Viaturas" },
+    { id: "imoveis", name: "Imóveis" },
+    { id: "eletronica", name: "Eletrónica" },
+    { id: "servicos", name: "Serviços" },
+    { id: "moda", name: "Moda e Beleza" },
+  ];
 
   return (
     <header className="w-full bg-[#fff159] text-slate-800 border-b border-yellow-400 shadow-sm sticky top-0 z-40">
@@ -160,15 +177,41 @@ export const Header = () => {
 
           {/* Center Navigation Links (Categories, Ofertas, SaaS Plans) */}
           <div className="hidden md:flex items-center gap-5 text-slate-600">
-            <button 
-              onClick={() => {
-                setSearchCategory("");
-                navigateTo("search");
-              }} 
-              className="hover:text-slate-900 transition-colors"
+            
+            {/* Categorias Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setShowCategoryMenu(true)}
+              onMouseLeave={() => setShowCategoryMenu(false)}
             >
-              Categorias
-            </button>
+              <button 
+                className="hover:text-slate-900 transition-colors flex items-center gap-1 py-2"
+                onClick={() => { setSearchCategory(""); navigateTo("search"); }}
+              >
+                Categorias <ChevronDown className="w-3 h-3" />
+              </button>
+              
+              {showCategoryMenu && (
+                <div className="absolute top-full left-0 mt-0 w-48 rounded-xl border border-border bg-card p-2 shadow-xl glass z-50 animate-slide-up text-left">
+                  <div className="flex flex-col gap-1">
+                    {categories.map(cat => (
+                      <button
+                        key={cat.id}
+                        onClick={() => {
+                          setSearchCategory(cat.id);
+                          setShowCategoryMenu(false);
+                          navigateTo("search");
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-foreground transition-all text-xs font-semibold"
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button 
               onClick={() => {
                 setSearchQuery("");
@@ -179,7 +222,7 @@ export const Header = () => {
               Ofertas do Dia
             </button>
             <button 
-              onClick={() => navigateTo(currentUser ? "create-ad" : "dashboard")}
+              onClick={handleSellClick}
               className="hover:text-slate-900 transition-colors font-bold text-emerald-700"
             >
               Vender
@@ -366,7 +409,7 @@ export const Header = () => {
 
             {/* Quick Sell CTA */}
             <button
-              onClick={() => navigateTo(currentUser ? "create-ad" : "dashboard")}
+              onClick={handleSellClick}
               className="bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold px-3 py-1.5 rounded shadow-sm hover:shadow transition-all flex items-center gap-1 active:scale-[0.98]"
             >
               <PlusCircle className="w-3.5 h-3.5" />
@@ -400,7 +443,7 @@ export const Header = () => {
         <div className="md:hidden bg-[#fff159] border-t border-yellow-400 px-4 py-3 flex flex-col gap-2 shadow-md">
           <button onClick={() => { navigateTo("search"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Categorias</button>
           <button onClick={() => { navigateTo("search"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Ofertas do Dia</button>
-          <button onClick={() => { navigateTo(currentUser ? "create-ad" : "dashboard"); setShowMobileMenu(false); }} className="text-left text-sm font-bold text-emerald-700 py-2 border-b border-yellow-300/60">Vender</button>
+          <button onClick={() => { handleSellClick(); setShowMobileMenu(false); }} className="text-left text-sm font-bold text-emerald-700 py-2 border-b border-yellow-300/60">Vender</button>
           {currentUser ? (
             <>
               <button onClick={() => { navigateTo("dashboard"); setShowMobileMenu(false); }} className="text-left text-sm font-semibold text-slate-700 py-2 border-b border-yellow-300/60">Meu Dashboard</button>

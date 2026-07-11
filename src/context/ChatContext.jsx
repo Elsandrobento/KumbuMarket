@@ -85,60 +85,8 @@ export const ChatProvider = ({ children }) => {
 
     setChats(updatedChats);
 
-    const recipientId = chat.buyerId === currentUser.id ? chat.sellerId : chat.buyerId;
-    const recipientUser = users.find((u) => u.id === recipientId) || USERS.find((u) => u.id === recipientId);
-
-    const responses = [
-      "Olá! Sim, ainda está disponível. Aceita vir ver amanhã?",
-      "O preço é ligeiramente negociável. Qual é a sua proposta?",
-      "Podemos encontrar-nos num local público para testar a mercadoria. Sugiro o Shopping de Belas.",
-      "Excelente, pode mandar o seu contacto de WhatsApp para facilitarmos a comunicação?",
-      "Ok, vou analisar e já lhe dou uma resposta definitiva. Obrigado pelo interesse!",
-      "Está em perfeitas condições. Quase não foi usado."
-    ];
-
-    const randomReply = responses[Math.floor(Math.random() * responses.length)];
-
-    setTimeout(() => {
-      const replyMessage = {
-        id: `m_reply_${Date.now()}`,
-        senderId: recipientId,
-        text: replyMessageText(text, randomReply),
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-
-      setChats((current) =>
-        current.map((c) => {
-          if (c.id === chatId) {
-            return {
-              ...c,
-              unread: true,
-              messages: [...c.messages, replyMessage]
-            };
-          }
-          return c;
-        })
-      );
-
-      addNotification("info", recipientUser?.name || "KumbuUser", `Enviou-lhe uma nova mensagem no chat.`);
-    }, 3000);
-  };
-
-  const replyMessageText = (inputText, fallback) => {
-    const lower = inputText.toLowerCase();
-    if (lower.includes("preço") || lower.includes("quanto") || lower.includes("desconto")) {
-      return "Podemos negociar um bocado sim, mas por favor faça uma proposta razoável.";
-    }
-    if (lower.includes("disponivel") || lower.includes("ainda tem") || lower.includes("ativo")) {
-      return "Sim, o artigo ainda está disponível e pronto a entregar.";
-    }
-    if (lower.includes("whatsapp") || lower.includes("contacto") || lower.includes("número")) {
-      return "Claro, podes ligar-me ou mandar mensagem no WhatsApp pelo contacto que está no anúncio.";
-    }
-    if (lower.includes("encontro") || lower.includes("onde") || lower.includes("ver")) {
-      return "Podemos fechar negócio num local seguro em Luanda, de preferência num shopping ou bomba de combustível movimentada.";
-    }
-    return fallback;
+    // The message is sent successfully. 
+    // We no longer trigger auto-replies. Users must log into the other account to reply.
   };
 
   const deleteChat = (chatId) => {

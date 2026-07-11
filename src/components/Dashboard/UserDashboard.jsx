@@ -263,24 +263,24 @@ export const UserDashboard = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-3.5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {myAds.map((ad) => (
                       <div
                         key={ad.id}
-                        className="p-4 rounded-2xl bg-card border border-border hover:border-border-hover flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
+                        className="p-4 rounded-2xl bg-card border border-border hover:border-border-hover flex flex-col justify-between gap-3 shadow-sm hover:shadow-md transition-all cursor-pointer"
                         onClick={() => navigateTo("ad-details", ad)}
                       >
-                        <div className="flex items-center gap-4 min-w-0">
+                        <div className="flex flex-col gap-3 min-w-0">
                           <img
                             src={ad.images[0]}
                             alt=""
-                            className="w-18 h-13 rounded-xl object-cover border border-border/40 shrink-0 shadow-sm"
+                            className="w-full h-32 rounded-xl object-cover border border-border/40 shadow-sm"
                           />
-                          <div className="min-w-0 flex flex-col gap-0.5">
-                            <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">{ad.title}</h4>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs sm:text-sm font-black text-primary">{formatPrice(ad.price)}</span>
-                              <span className="text-[9px] text-muted-foreground">• {ad.views} visualizações</span>
+                          <div className="flex flex-col gap-1">
+                            <h4 className="text-sm font-bold text-foreground line-clamp-2 leading-tight">{ad.title}</h4>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-sm font-black text-primary">{formatPrice(ad.price)}</span>
+                              <span className="text-[10px] text-muted-foreground">• {ad.views} visualizações</span>
                             </div>
                             
                             {/* Status Labels */}
@@ -303,18 +303,20 @@ export const UserDashboard = () => {
                           </div>
                         </div>
 
-                        <div className="flex flex-col items-end gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between gap-1.5 border-t border-border/50 pt-2" onClick={(e) => e.stopPropagation()}>
+                          {ad.status === "pendente" ? (
+                            <span className="text-[10px] font-bold text-amber-500 leading-tight">
+                              Aguardando aprovação
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-muted-foreground">Ativo</span>
+                          )}
                           <button
                             onClick={() => navigateTo("ad-details", ad)}
-                            className="flex items-center gap-0.5 text-xs font-bold text-primary hover:underline"
+                            className="flex items-center gap-0.5 text-xs font-bold text-primary hover:underline bg-primary/10 px-2 py-1 rounded-md"
                           >
                             Gerir <ChevronRight className="w-3.5 h-3.5" />
                           </button>
-                          {ad.status === "pendente" && (
-                            <p className="text-[8px] font-bold text-amber-500 text-right max-w-[120px] leading-tight">
-                              Aguardando aprovação do Administrador
-                            </p>
-                          )}
                         </div>
                       </div>
                     ))}
