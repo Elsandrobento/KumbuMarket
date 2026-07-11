@@ -122,16 +122,13 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // Helper to ensure demo accounts exist in Firebase Auth + Firestore
   const ensureDemoAccount = async (demoAccount) => {
     try {
-      // Try to sign in first
       const result = await signInWithEmailAndPassword(auth, demoAccount.email, demoAccount.password);
-      // Check if Firestore profile exists
+      // Ensure profile exists
       const profileRef = doc(db, "users", result.user.uid);
       const snap = await getDoc(profileRef);
       if (!snap.exists()) {
-        // Create profile if missing
         await setDoc(profileRef, {
           ...demoAccount.profile,
           email: demoAccount.email,
@@ -140,8 +137,8 @@ export const AuthProvider = ({ children }) => {
       }
       return result.user;
     } catch (err) {
-      if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
-        // Create the demo account
+      // If it fails, try to create it
+      try {
         const result = await createUserWithEmailAndPassword(auth, demoAccount.email, demoAccount.password);
         const profileRef = doc(db, "users", result.user.uid);
         await setDoc(profileRef, {
@@ -150,14 +147,15 @@ export const AuthProvider = ({ children }) => {
           createdAt: Date.now()
         });
         return result.user;
+      } catch (createErr) {
+        console.error("Failed to ensure demo account", createErr);
+        throw createErr;
       }
-      throw err;
     }
   };
 
   const registerUser = async (userData) => {
     try {
-      // Generate a unique email from phone for users who only provide phone
       const email = userData.email || `${userData.phone.replace(/\D/g, "")}@kumbu.ao`;
       const result = await createUserWithEmailAndPassword(auth, email, userData.password);
 
@@ -184,7 +182,6 @@ export const AuthProvider = ({ children }) => {
       };
 
       await setDoc(doc(db, "users", result.user.uid), newProfile);
-
       setShowAuthModal(false);
       addNotification("success", "Conta Criada!", `Bem-vindo ao KumbuMarket, ${userData.name}!`);
       navigateTo("home");
@@ -201,16 +198,16 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (emailOrId, password) => {
     const clean = emailOrId.toLowerCase().trim();
 
-    // Check if it's a demo account request
+    // Check if it's a demo account request by email or first name
     const demoMatch = DEMO_ACCOUNTS.find(
-      da => da.email === clean ||
+      da => da.email.toLowerCase() === clean ||
+            clean === da.profile.name.split(" ")[0].toLowerCase() ||
             clean.includes(da.profile.name.split(" ")[0].toLowerCase())
     );
 
     try {
       if (demoMatch) {
         await ensureDemoAccount(demoMatch);
-        // onAuthStateChanged will update the state
         setShowAuthModal(false);
 
         if (demoMatch.profile.role === "admin") {
@@ -231,13 +228,7 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (err) {
       console.error("Login error:", err);
-      if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
-        addNotification("error", "Password Incorreta", "Password errada. Contas demo: use 'admin123' para admin, 'kumbu123' para os outros.");
-      } else if (err.code === "auth/user-not-found") {
-        addNotification("error", "Utilizador não encontrado", "Conta não existe. Cria uma conta nova.");
-      } else {
-        addNotification("error", "Erro de Sessão", err.message);
-      }
+      addNotification("error", "Erro ao entrar", "Credenciais incorretas ou conta inexistente. Contas de demo: admin, carlos, dina.");
       return false;
     }
   };

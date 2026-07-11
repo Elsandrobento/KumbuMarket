@@ -14,6 +14,8 @@ import { db } from "../firebase";
 import { useUI } from "./UIContext";
 import { useAuth } from "./AuthContext";
 import { useFinancials } from "./FinancialContext";
+import { INITIAL_ADS } from "../data/mockData";
+import { getDocs } from "firebase/firestore";
 
 const AdContext = createContext(undefined);
 
@@ -40,6 +42,30 @@ export const AdProvider = ({ children }) => {
 
   // Real-time listener for ads from Firestore
   useEffect(() => {
+    // Seeder function
+    const seedAdsIfEmpty = async () => {
+      try {
+        const snap = await getDocs(collection(db, "ads"));
+        if (snap.empty) {
+          console.log("Database is empty. Seeding INITIAL_ADS...");
+          for (const ad of INITIAL_ADS) {
+            // we remove 'id' because Firestore auto-generates one, but we can keep it as 'legacyId' if needed
+            const { id, ...adData } = ad;
+            // create date as timestamp for sorting
+            const seedAd = {
+              ...adData,
+              legacyId: id,
+              createdAt: serverTimestamp()
+            };
+            await addDoc(collection(db, "ads"), seedAd);
+          }
+        }
+      } catch (err) {
+        console.error("Seeding error:", err);
+      }
+    };
+    seedAdsIfEmpty();
+
     const q = query(collection(db, "ads"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const adsData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
